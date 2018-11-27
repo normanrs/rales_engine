@@ -42,24 +42,67 @@ describe 'merchants API' do
   end
 
   it "finds one merchant by created_at" do
-    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00", updated_at: "2018-08-01 09:00:00")
+    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found[:id]).to eq(merchant.id)
-    expect(found[:name]).to eq(merchant.name)
+    expect(found["id"]).to eq(merchant.id)
   end
 
-  xit "finds one merchant by updated_at" do
+  it "finds one merchant by updated_at" do
+    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+
+    get "/api/v1/merchants/find?created_at=#{merchant.updated_at}"
+
+    found = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(found["id"]).to eq(merchant.id)
+  end
+
+  it "finds all merchant by name" do
+    merch1 = create(:merchant, name: "Norm")
+    merch2 = create(:merchant, name: "Norm")
+    get "/api/v1/merchants/find_all?name=#{merch2.name}"
+
+    found = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(found.count).to eq(2)
+  end
+
+  it "finds all merchant by id" do
     merch1 = create(:merchant, name: "Norm")
     merch2 = create(:merchant, name: "Dave")
-    get "/api/v1/merchants/find?name=#{merch2.name}"
+    get "/api/v1/merchants/find_all?id=#{merch2.id}"
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
     expect(found["id"]).to eq(merch2.id)
+  end
+
+  it "finds all merchant by created_at" do
+    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+
+    get "/api/v1/merchants/find_all?created_at=#{merchant1.created_at}"
+
+    found = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(found.count).to eq(2)
+  end
+
+  it "finds all merchant by updated_at" do
+    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+
+    get "/api/v1/merchants/find_all?created_at=#{merchant1.updated_at}"
+
+    found = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(found.count).to eq(2)
   end
 
 
