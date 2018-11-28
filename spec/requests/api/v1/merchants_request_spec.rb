@@ -32,10 +32,10 @@ describe 'merchants API' do
     expect(roll.class).to eq(Hash)
   end
 
-  it "finds one merchant by name" do
+  it "finds one merchant by case_insensitive name" do
     merch1 = create(:merchant, name: "Norm")
     merch2 = create(:merchant, name: "Dave")
-    get "/api/v1/merchants/find?name=#{merch2.name}"
+    get "/api/v1/merchants/find?name=#{merch2.name.downcase}"
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
@@ -55,7 +55,8 @@ describe 'merchants API' do
   it "finds one merchant by created_at" do
     merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
-    get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+    # get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
+    get "/api/v1/merchants/find?created_at='2018-08-01T09:00:00.000Z'"
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
@@ -72,10 +73,10 @@ describe 'merchants API' do
     expect(found["id"]).to eq(merchant.id)
   end
 
-  it "finds all merchants by name" do
+  it "finds all merchants by case_insensitive name" do
     merch1 = create(:merchant, name: "Norm")
     merch2 = create(:merchant, name: "Norm")
-    get "/api/v1/merchants/find_all?name=#{merch2.name}"
+    get "/api/v1/merchants/find_all?name=#{merch2.name.downcase}"
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
