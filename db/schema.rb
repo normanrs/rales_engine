@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_012743) do
+ActiveRecord::Schema.define(version: 2018_11_28_015927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(version: 2018_11_28_012743) do
   create_table "customers", force: :cascade do |t|
     t.citext "first_name"
     t.citext "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "merchant_id"
+    t.citext "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
