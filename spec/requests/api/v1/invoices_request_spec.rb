@@ -14,7 +14,7 @@ describe 'invoices API' do
 
     expect(response).to be_successful
     invoices = JSON.parse(response.body)
-    expect(invoices.count).to eq(3)
+    expect(invoices["data"].count).to eq(3)
   end
 
   it "sends one invoice by id" do
@@ -24,7 +24,7 @@ describe 'invoices API' do
 
     invoice = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(invoice["id"]).to eq(id)
+    expect(invoice["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one invoice at random" do
@@ -33,9 +33,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/random"
 
-    roll = JSON.parse(response.body)
+    found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(roll.class).to eq(Hash)
+    expect(found.class).to eq(Hash)
   end
 
   it "finds one invoice by status" do
@@ -45,7 +45,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merch2.id)
+    expect(found["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one invoice by id" do
@@ -55,7 +55,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merch2.id)
+    expect(found["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one invoice by created_at" do
@@ -66,7 +66,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(invoice.id)
+    expect(found["data"]["id"].to_i).to eq(invoice.id)
   end
 
   it "finds one invoice by updated_at" do
@@ -76,7 +76,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(invoice.id)
+    expect(found["data"]["id"].to_i).to eq(invoice.id)
   end
 
   it "finds all invoices by status" do
@@ -86,7 +86,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(1)
+    expect(found["data"].count).to eq(1)
   end
 
   it "finds all invoices by created_at" do
@@ -98,7 +98,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(2)
+    expect(found["data"].count).to eq(2)
   end
 
   it "finds all invoices by updated_at" do
@@ -110,7 +110,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(2)
+    expect(found["data"].count).to eq(2)
   end
 
   it "finds all invoices by id" do
@@ -122,7 +122,7 @@ describe 'invoices API' do
 
     found = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(1)
+    expect(found["data"].count).to eq(1)
   end
 
 end

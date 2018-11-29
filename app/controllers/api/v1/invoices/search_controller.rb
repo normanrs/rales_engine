@@ -1,14 +1,14 @@
 class Api::V1::Invoices::SearchController < ApplicationController
   def show
     if search_params.permitted? == true
-      render json: Invoice.find_by(search_params)
+      render json: InvoiceSerializer.new(Invoice.find_by(search_params))
     else
-      render json: Invoice.random
+      render json: InvoiceSerializer.new(Invoice.random)
     end
   end
 
   def index
-    render json: Invoice.where(search_params)
+    render json: InvoiceSerializer.new(Invoice.where(search_params))
   end
 
 private
