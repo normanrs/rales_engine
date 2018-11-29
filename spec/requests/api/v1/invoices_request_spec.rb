@@ -13,8 +13,8 @@ describe 'invoices API' do
     get '/api/v1/invoices'
 
     expect(response).to be_successful
-    invoices = JSON.parse(response.body)
-    expect(invoices["data"].count).to eq(3)
+    result = JSON.parse(response.body)
+    expect(result["data"].count).to eq(3)
   end
 
   it "sends one invoice by id" do
@@ -22,9 +22,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/#{id}"
 
-    invoice = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(invoice["data"]["id"].to_i).to eq(id)
+    expect(result["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one invoice at random" do
@@ -33,9 +33,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/random"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.class).to eq(Hash)
+    expect(result.class).to eq(Hash)
   end
 
   it "finds one invoice by status" do
@@ -43,9 +43,9 @@ describe 'invoices API' do
     merch2 = create(:invoice, status: "pending")
     get "/api/v1/invoices/find?status=#{merch2.status}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"]["id"].to_i).to eq(merch2.id)
+    expect(result["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one invoice by id" do
@@ -53,9 +53,9 @@ describe 'invoices API' do
     merch2 = create(:invoice)
     get "/api/v1/invoices/find?id=#{merch2.id}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"]["id"].to_i).to eq(merch2.id)
+    expect(result["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one invoice by created_at" do
@@ -64,9 +64,9 @@ describe 'invoices API' do
     # get "/api/v1/invoices/find?created_at=#{invoice.created_at}"
     get "/api/v1/invoices/find?created_at='2018-08-01T09:00:00.000Z'"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"]["id"].to_i).to eq(invoice.id)
+    expect(result["data"]["id"].to_i).to eq(invoice.id)
   end
 
   it "finds one invoice by updated_at" do
@@ -74,9 +74,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/find?created_at=#{invoice.updated_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"]["id"].to_i).to eq(invoice.id)
+    expect(result["data"]["id"].to_i).to eq(invoice.id)
   end
 
   it "finds all invoices by status" do
@@ -84,9 +84,9 @@ describe 'invoices API' do
     merch2 = create(:invoice, status: "pending")
     get "/api/v1/invoices/find_all?status=#{merch2.status}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"].count).to eq(1)
+    expect(result["data"].count).to eq(1)
   end
 
   it "finds all invoices by created_at" do
@@ -96,9 +96,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/find_all?created_at=#{invoice1.created_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"].count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all invoices by updated_at" do
@@ -108,9 +108,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/find_all?created_at=#{invoice1.updated_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"].count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all invoices by id" do
@@ -120,9 +120,9 @@ describe 'invoices API' do
 
     get "/api/v1/invoices/find_all?id=#{invoice1.id}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["data"].count).to eq(1)
+    expect(result["data"].count).to eq(1)
   end
 
 end
