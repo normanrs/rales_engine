@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe 'items API' do
+
+  before(:each) do
+    @customer = create(:customer)
+    @merchant = create(:merchant)
+  end
+
   it "sends a list of items" do
     create_list(:item, 3)
 
@@ -52,7 +58,7 @@ describe 'items API' do
   end
 
   it "finds one item by created_at" do
-    item = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/items/find?created_at=#{item.created_at}"
 
@@ -62,7 +68,7 @@ describe 'items API' do
   end
 
   it "finds one item by updated_at" do
-    item = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/items/find?created_at=#{item.updated_at}"
 
@@ -82,9 +88,9 @@ describe 'items API' do
   end
 
   it "finds all items by created_at" do
-    item1 = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    item2 = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    item3 = Item.create!(created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    item1 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item2 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item3 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/items/find_all?created_at=#{item1.created_at}"
 
@@ -94,9 +100,9 @@ describe 'items API' do
   end
 
   it "finds all items by updated_at" do
-    item1 = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    item2 = Item.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    item3 = Item.create!(created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    item1 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item2 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    item3 = Item.create!(merchant_id:@merchant.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/items/find_all?created_at=#{item1.updated_at}"
 
@@ -106,9 +112,9 @@ describe 'items API' do
   end
 
   it "finds all items by id" do
-    item1 = Item.create!
-    item2 = Item.create!
-    item3 = Item.create!
+    item1 = create(:item)
+    item2 = create(:item)
+    item3 = create(:item)
 
     get "/api/v1/items/find_all?id=#{item1.id}"
 
