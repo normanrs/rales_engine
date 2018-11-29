@@ -58,8 +58,8 @@ end
 task :import do
   Rake::Task["create_merchants"].invoke
   Rake::Task["create_customers"].invoke
-  # Rake::Task["create_items"].invoke
-  # Rake::Task["create_invoices"].invoke
-  # Rake::Task["create_transactions"].invoke
-  # Rake::Task["create_invoice_items"].invoke
+  Rake::Task["create_items"].invoke
+  Rake::Task["create_invoices"].invoke
+  Rake::Task["create_transactions"].invoke
+  Rake::Task["create_invoice_items"].invoke
 end
