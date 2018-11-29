@@ -8,7 +8,7 @@ describe 'customers API' do
 
     expect(response).to be_successful
     results = JSON.parse(response.body)
-    expect(results.count).to eq(3)
+    expect(results["data"].count).to eq(3)
   end
 
   it "sends one customer by id" do
@@ -18,7 +18,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(id)
+    expect(result["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one customer at random" do
@@ -38,7 +38,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
+    expect(result["data"]["id"].to_i).to eq(test2.id)
   end
 
   it "finds one customer by id" do
@@ -48,7 +48,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
+    expect(result["data"]["id"].to_i).to eq(test2.id)
   end
 
   it "finds one customer by created_at" do
@@ -58,7 +58,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(customer.id)
+    expect(result["data"]["id"].to_i).to eq(customer.id)
   end
 
   it "finds one customer by updated_at" do
@@ -68,7 +68,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(customer.id)
+    expect(result["data"]["id"].to_i).to eq(customer.id)
   end
 
   it "finds all customers by case_insensitive name" do
@@ -78,7 +78,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all customers by created_at" do
@@ -90,7 +90,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all customers by updated_at" do
@@ -102,7 +102,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all customers by id" do
@@ -114,7 +114,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(1)
+    expect(result["data"].count).to eq(1)
   end
 
 end
