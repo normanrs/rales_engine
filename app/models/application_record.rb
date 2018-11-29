@@ -5,4 +5,6 @@ class ApplicationRecord < ActiveRecord::Base
     order("RANDOM()").first
   end
 
+  default_scope { order(:id) }
+
 end
