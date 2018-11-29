@@ -13,8 +13,8 @@ describe 'items API' do
     get '/api/v1/items'
 
     expect(response).to be_successful
-    results = JSON.parse(response.body)
-    expect(results.count).to eq(3)
+    result = JSON.parse(response.body)
+    expect(result["data"].count).to eq(3)
   end
 
   it "sends one item by id" do
@@ -24,7 +24,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(id)
+    expect(result["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one item at random" do
@@ -44,7 +44,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
+    expect(result["data"]["id"].to_i).to eq(test2.id)
   end
 
   it "finds one item by id" do
@@ -54,7 +54,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
+    expect(result["data"]["id"].to_i).to eq(test2.id)
   end
 
   it "finds one item by created_at" do
@@ -64,7 +64,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(item.id)
+    expect(result["data"]["id"].to_i).to eq(item.id)
   end
 
   it "finds one item by updated_at" do
@@ -74,7 +74,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(item.id)
+    expect(result["data"]["id"].to_i).to eq(item.id)
   end
 
   it "finds all items by case_insensitive name" do
@@ -84,7 +84,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all items by created_at" do
@@ -96,7 +96,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all items by updated_at" do
@@ -108,7 +108,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all items by id" do
@@ -120,7 +120,7 @@ describe 'items API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(1)
+    expect(result["data"].count).to eq(1)
   end
 
 end

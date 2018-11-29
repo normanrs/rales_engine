@@ -7,8 +7,8 @@ describe 'merchants API' do
     get '/api/v1/merchants'
 
     expect(response).to be_successful
-    merchants = JSON.parse(response.body)
-    expect(merchants.count).to eq(3)
+    result = JSON.parse(response.body)
+    expect(result["data"].count).to eq(3)
   end
 
   it "sends one merchant by id" do
@@ -16,9 +16,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/#{id}"
 
-    merchant = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(merchant["id"]).to eq(id)
+    expect(result["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one merchant at random" do
@@ -27,9 +27,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/random"
 
-    roll = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(roll.class).to eq(Hash)
+    expect(result.class).to eq(Hash)
   end
 
   it "finds one merchant by case_insensitive name" do
@@ -37,9 +37,9 @@ describe 'merchants API' do
     merch2 = create(:merchant, name: "Dave")
     get "/api/v1/merchants/find?name=#{merch2.name.downcase}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merch2.id)
+    expect(result["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one merchant by id" do
@@ -47,9 +47,9 @@ describe 'merchants API' do
     merch2 = create(:merchant, name: "Dave")
     get "/api/v1/merchants/find?id=#{merch2.id}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merch2.id)
+    expect(result["data"]["id"].to_i).to eq(merch2.id)
   end
 
   it "finds one merchant by created_at" do
@@ -58,9 +58,9 @@ describe 'merchants API' do
     # get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
     get "/api/v1/merchants/find?created_at='2018-08-01T09:00:00.000Z'"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merchant.id)
+    expect(result["data"]["id"].to_i).to eq(merchant.id)
   end
 
   it "finds one merchant by updated_at" do
@@ -68,9 +68,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/find?created_at=#{merchant.updated_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found["id"]).to eq(merchant.id)
+    expect(result["data"]["id"].to_i).to eq(merchant.id)
   end
 
   it "finds all merchants by case_insensitive name" do
@@ -78,9 +78,9 @@ describe 'merchants API' do
     merch2 = create(:merchant, name: "Norm")
     get "/api/v1/merchants/find_all?name=#{merch2.name.downcase}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all merchants by created_at" do
@@ -90,9 +90,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.created_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all merchants by updated_at" do
@@ -102,9 +102,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.updated_at}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all merchants by id" do
@@ -114,9 +114,9 @@ describe 'merchants API' do
 
     get "/api/v1/merchants/find_all?id=#{merchant1.id}"
 
-    found = JSON.parse(response.body)
+    result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(found.count).to eq(1)
+    expect(result["data"].count).to eq(1)
   end
 
 end
