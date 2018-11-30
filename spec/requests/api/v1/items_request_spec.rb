@@ -163,4 +163,29 @@ describe 'items API' do
     expect(result["data"].count).to eq(1)
   end
 
+  it "returns invoice_items associated with an item" do
+    item1 = create(:item)
+    invoice_items1 = create_list(:invoice_item, 10, item_id: item1.id)
+    ids = invoice_items1.map { |i| i.id }
+    create_list(:invoice_item, 5)
+
+    get "/api/v1/items/:id/invoice_items?id=#{item1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(ids).to include(result["data"].first["attributes"]["id"])
+  end
+
+  it "returns merchant associated with an item" do
+    item1 = create(:item)
+
+    get "/api/v1/items/:id/merchant?id=#{item1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"]).to eq(item1.merchant_id)
+  end
+
+
 end
