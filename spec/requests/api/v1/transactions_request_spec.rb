@@ -184,4 +184,15 @@ describe 'transactions API' do
     expect(result["data"].count).to eq(1)
   end
 
+  it "returns invoice associated with a transaction" do
+    transaction1 = create(:transaction)
+
+    get "/api/v1/transactions/:id/invoice?id=#{transaction1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"]).to eq(transaction1.invoice_id)
+  end
+
+
 end

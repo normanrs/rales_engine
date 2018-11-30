@@ -131,10 +131,40 @@ describe 'customers API' do
     test1 = create(:customer, last_name: "Norm")
     test2 = create(:customer, last_name: "Norm")
     get "/api/v1/customers/find_all?name=#{test2.last_name.downcase}"
-    
+
     result = JSON.parse(response.body)
     expect(response).to be_successful
     expect(result["data"].count).to eq(2)
+  end
+
+  it "returns invoices associated with a customer" do
+    customer1 = create(:customer)
+    create_list(:invoice, 10, customer_id: customer1.id)
+    create_list(:invoice, 10)
+
+    get "/api/v1/customers/:id/invoices?id=#{customer1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(result["data"].first["attributes"]["customer_id"]).to eq(customer1.id)
+  end
+
+  it "returns transactions associated with a customer" do
+    customer = create(:customer)
+    invoices = create_list(:invoice, 10, customer_id: customer.id)
+    trans = invoices.map do |invoice|
+      Transaction.create!(invoice_id: invoice.id)
+    end
+    ids = trans.map { |i| i.id }
+    create_list(:transaction, 5)
+
+    get "/api/v1/customers/:id/transactions?id=#{customer.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(ids).to include(result["data"].first["attributes"]["id"])
   end
 
 end
