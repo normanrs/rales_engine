@@ -143,4 +143,24 @@ describe 'items API' do
     expect(result["data"].count).to eq(2)
   end
 
+  it "finds one item by merchant id" do
+    test1 = create(:item)
+    test2 = create(:item)
+    get "/api/v1/items/find?merchant_id=#{test2.merchant_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(test2.id)
+  end
+
+  it "finds all items by merchant id" do
+    test1 = create(:item)
+    test2 = create(:item)
+    get "/api/v1/items/find_all?merchant_id=#{test2.merchant_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(1)
+  end
+
 end

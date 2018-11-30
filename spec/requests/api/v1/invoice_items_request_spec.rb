@@ -3,8 +3,6 @@ require 'rails_helper'
 describe 'invoice_items API' do
 
   before(:each) do
-    # @customer = create(:customer)
-    # @merchant = create(:merchant)
     @item = create(:item)
     @invoice = create(:invoice)
 
@@ -146,6 +144,50 @@ describe 'invoice_items API' do
     result = JSON.parse(response.body)
     expect(response).to be_successful
     expect(result["data"].count).to eq(1)
+  end
+
+  it "finds one invoice by invoice_id" do
+    invoice_item1 = create(:invoice_item)
+    invoice_item2 = create(:invoice_item)
+    get "/api/v1/invoice_items/find?invoice_id=#{invoice_item2.invoice_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(invoice_item2.id)
+  end
+
+  it "finds all invoices by invoice id" do
+    invoice_item1 = create(:invoice_item, invoice_id: @invoice.id)
+    invoice_item2 = create(:invoice_item, invoice_id: @invoice.id)
+    invoice_item3 = create(:invoice_item, invoice_id: @invoice.id)
+
+    get "/api/v1/invoice_items/find_all?invoice_id=#{invoice_item1.invoice_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(3)
+  end
+
+  it "finds one invoice by item_id" do
+    invoice_item1 = create(:invoice_item)
+    invoice_item2 = create(:invoice_item)
+    get "/api/v1/invoice_items/find?item_id=#{invoice_item2.item_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(invoice_item2.id)
+  end
+
+  it "finds all invoices by item_id" do
+    invoice_item1 = create(:invoice_item, item_id: @item.id)
+    invoice_item2 = create(:invoice_item, item_id: @item.id)
+    invoice_item3 = create(:invoice_item, item_id: @item.id)
+
+    get "/api/v1/invoice_items/find_all?item_id=#{invoice_item1.item_id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(3)
   end
 
 end
