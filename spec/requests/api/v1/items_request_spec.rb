@@ -123,4 +123,24 @@ describe 'items API' do
     expect(result["data"].count).to eq(1)
   end
 
+  it "finds one item by unit price" do
+    test1 = create(:item, unit_price: 40)
+    test2 = create(:item, unit_price: 80)
+    get "/api/v1/items/find?unit_price=#{test2.unit_price}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(test2.id)
+  end
+
+  it "finds all items by unit price" do
+    test1 = create(:item, unit_price: 40)
+    test2 = create(:item, unit_price: 40)
+    get "/api/v1/items/find_all?unit_price=#{test2.unit_price}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(2)
+  end
+
 end
