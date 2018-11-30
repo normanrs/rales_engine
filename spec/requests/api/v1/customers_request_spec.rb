@@ -8,7 +8,7 @@ describe 'customers API' do
 
     expect(response).to be_successful
     results = JSON.parse(response.body)
-    expect(results.count).to eq(3)
+    expect(results["data"].count).to eq(3)
   end
 
   it "sends one customer by id" do
@@ -18,7 +18,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(id)
+    expect(result["data"]["id"].to_i).to eq(id)
   end
 
   it "sends one customer at random" do
@@ -31,16 +31,6 @@ describe 'customers API' do
     expect(result.class).to eq(Hash)
   end
 
-  it "finds one customer by case_insensitive name" do
-    test1 = create(:customer, first_name: "Norm")
-    test2 = create(:customer, first_name: "Dave")
-    get "/api/v1/customers/find?first_name=#{test2.first_name.downcase}"
-
-    result = JSON.parse(response.body)
-    expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
-  end
-
   it "finds one customer by id" do
     test1 = create(:customer)
     test2 = create(:customer)
@@ -48,7 +38,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(test2.id)
+    expect(result["data"]["id"].to_i).to eq(test2.id)
   end
 
   it "finds one customer by created_at" do
@@ -58,7 +48,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(customer.id)
+    expect(result["data"]["id"].to_i).to eq(customer.id)
   end
 
   it "finds one customer by updated_at" do
@@ -68,17 +58,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["id"]).to eq(customer.id)
-  end
-
-  it "finds all customers by case_insensitive name" do
-    test1 = create(:customer, first_name: "Norm")
-    test2 = create(:customer, first_name: "Norm")
-    get "/api/v1/customers/find_all?name=#{test2.first_name.downcase}"
-
-    result = JSON.parse(response.body)
-    expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"]["id"].to_i).to eq(customer.id)
   end
 
   it "finds all customers by created_at" do
@@ -90,7 +70,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all customers by updated_at" do
@@ -102,7 +82,7 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(2)
+    expect(result["data"].count).to eq(2)
   end
 
   it "finds all customers by id" do
@@ -114,7 +94,47 @@ describe 'customers API' do
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result.count).to eq(1)
+    expect(result["data"].count).to eq(1)
+  end
+
+  it "finds one customer by case_insensitive first name" do
+    test1 = create(:customer, first_name: "Norm")
+    test2 = create(:customer, first_name: "Dave")
+    get "/api/v1/customers/find?first_name=#{test2.first_name.downcase}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(test2.id)
+  end
+
+  it "finds all customers by case_insensitive first name" do
+    test1 = create(:customer, first_name: "Norm")
+    test2 = create(:customer, first_name: "Norm")
+    get "/api/v1/customers/find_all?name=#{test2.first_name.downcase}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(2)
+  end
+
+  it "finds one customer by case_insensitive last name" do
+    test1 = create(:customer, last_name: "Norm")
+    test2 = create(:customer, last_name: "Dave")
+    get "/api/v1/customers/find?last_name=#{test2.last_name.downcase}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["id"].to_i).to eq(test2.id)
+  end
+
+  it "finds all customers by case_insensitive last name" do
+    test1 = create(:customer, last_name: "Norm")
+    test2 = create(:customer, last_name: "Norm")
+    get "/api/v1/customers/find_all?name=#{test2.last_name.downcase}"
+    
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(2)
   end
 
 end

@@ -1,14 +1,14 @@
 class Api::V1::Customers::SearchController < ApplicationController
   def show
     if search_params.permitted? == true
-      render json: Customer.find_by(search_params)
+      render json: CustomerSerializer.new(Customer.find_by(search_params))
     else
-      render json: Customer.random
+      render json: CustomerSerializer.new(Customer.random)
     end
   end
 
   def index
-    render json: Customer.where(search_params)
+    render json: CustomerSerializer.new(Customer.where(search_params))
   end
 
 private

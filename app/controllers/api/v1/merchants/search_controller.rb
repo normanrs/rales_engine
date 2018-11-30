@@ -1,14 +1,14 @@
 class Api::V1::Merchants::SearchController < ApplicationController
   def show
     if search_params.permitted? == true
-      render json: Merchant.find_by(search_params)
+      render json: MerchantSerializer.new(Merchant.find_by(search_params))
     else
-      render json: Merchant.random
+      render json: MerchantSerializer.new(Merchant.random)
     end
   end
 
   def index
-    render json: Merchant.where(search_params)
+    render json: MerchantSerializer.new(Merchant.where(search_params))
   end
 
 private
