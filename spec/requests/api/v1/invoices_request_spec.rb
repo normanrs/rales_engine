@@ -190,4 +190,66 @@ describe 'invoices API' do
     expect(result["data"].count).to eq(3)
   end
 
+  it "returns transactions associated with an invoice" do
+    invoice1 = create(:invoice)
+    transactions1 = create_list(:transaction, 10, invoice_id: invoice1.id)
+    ids = transactions1.map { |i| i.id }
+    create_list(:transaction, 5)
+
+    get "/api/v1/invoices/:id/transactions?id=#{invoice1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(ids).to include(result["data"].first["attributes"]["id"])
+  end
+
+  it "returns invoice_items associated with an invoice" do
+    invoice1 = create(:invoice)
+    invoice_items1 = create_list(:invoice_item, 10, invoice_id: invoice1.id)
+    ids = invoice_items1.map { |i| i.id }
+    create_list(:invoice_item, 5)
+
+    get "/api/v1/invoices/:id/invoice_items?id=#{invoice1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(ids).to include(result["data"].first["attributes"]["id"])
+  end
+
+  it "returns items associated with an invoice" do
+    invoice1 = create(:invoice)
+    invoice_items1 = create_list(:invoice_item, 10, invoice_id: invoice1.id)
+    item_ids = invoice_items1.map { |i| i.item_id }
+    create_list(:invoice_item, 5)
+
+    get "/api/v1/invoices/:id/items?id=#{invoice1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(10)
+    expect(item_ids).to include(result["data"].first["attributes"]["id"])
+  end
+
+  it "returns customer associated with an invoice" do
+    invoice1 = create(:invoice)
+
+    get "/api/v1/invoices/:id/customer?id=#{invoice1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"]).to eq(invoice1.customer_id)
+  end
+
+  it "returns merchant associated with an invoice" do
+    invoice1 = create(:invoice)
+
+    get "/api/v1/invoices/:id/merchant?id=#{invoice1.id}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"]).to eq(invoice1.merchant_id)
+  end
+
 end
