@@ -107,8 +107,8 @@ describe 'invoice_items API' do
   end
 
   it "finds one invoice_item by quantity" do
-    invoice_item1 = create(:invoice_item, quantity: 40)
-    invoice_item2 = create(:invoice_item, quantity: 80)
+    invoice_item1 = create(:invoice_item, quantity: "40")
+    invoice_item2 = create(:invoice_item, quantity: "80")
     get "/api/v1/invoice_items/find?quantity=#{invoice_item2.quantity}"
 
     result = JSON.parse(response.body)
