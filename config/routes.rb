@@ -86,6 +86,3 @@ Rails.application.routes.draw do
   end
 
 end
-
-Customers
-GET /api/v1/customers/:id/favorite_merchant
