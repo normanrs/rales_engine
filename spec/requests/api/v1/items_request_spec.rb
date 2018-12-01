@@ -169,7 +169,7 @@ describe 'items API' do
     ids = invoice_items1.map { |i| i.id }
     create_list(:invoice_item, 5)
 
-    get "/api/v1/items/:id/invoice_items?id=#{item1.id}"
+    get "/api/v1/items/#{item1.id}/invoice_items"
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
@@ -180,7 +180,18 @@ describe 'items API' do
   it "returns merchant associated with an item" do
     item1 = create(:item)
 
-    get "/api/v1/items/:id/merchant?id=#{item1.id}"
+    get "/api/v1/items/#{item1.id}/merchant"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"]).to eq(item1.merchant_id)
+  end
+
+  xit "returns items best day" do
+    item1 = create(:item, merchant: merchant1)
+    allow(Item.best_day).to receive(item1.id) {}
+
+    get "/api/v1/items/#{item1.id}/best_day"
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
