@@ -45,6 +45,7 @@ describe 'merchants API' do
   it "finds one merchant by id" do
     merch1 = create(:merchant, name: "Norm")
     merch2 = create(:merchant, name: "Dave")
+
     get "/api/v1/merchants/find?id=#{merch2.id}"
 
     result = JSON.parse(response.body)
@@ -55,7 +56,6 @@ describe 'merchants API' do
   it "finds one merchant by created_at" do
     merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
-    # get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
     get "/api/v1/merchants/find?created_at='2018-08-01T09:00:00.000Z'"
 
     result = JSON.parse(response.body)
