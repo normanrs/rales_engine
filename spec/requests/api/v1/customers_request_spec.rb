@@ -42,7 +42,7 @@ describe 'customers API' do
   end
 
   it "finds one customer by created_at" do
-    customer = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/customers/find?created_at=#{customer.created_at}"
 
@@ -52,7 +52,7 @@ describe 'customers API' do
   end
 
   it "finds one customer by updated_at" do
-    customer = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/customers/find?created_at=#{customer.updated_at}"
 
@@ -62,9 +62,9 @@ describe 'customers API' do
   end
 
   it "finds all customers by created_at" do
-    customer1 = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    customer2 = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    customer3 = Customer.create!(created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    customer1 = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer2 = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer3 = create(:customer, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/customers/find_all?created_at=#{customer1.created_at}"
 
@@ -74,9 +74,9 @@ describe 'customers API' do
   end
 
   it "finds all customers by updated_at" do
-    customer1 = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    customer2 = Customer.create!(created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    customer3 = Customer.create!(created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    customer1 = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer2 = create(:customer, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    customer3 = create(:customer, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/customers/find_all?created_at=#{customer1.updated_at}"
 
@@ -86,9 +86,9 @@ describe 'customers API' do
   end
 
   it "finds all customers by id" do
-    customer1 = Customer.create!
-    customer2 = Customer.create!
-    customer3 = Customer.create!
+    customer1 = create(:customer)
+    customer2 = create(:customer)
+    customer3 = create(:customer)
 
     get "/api/v1/customers/find_all?id=#{customer1.id}"
 
@@ -154,7 +154,7 @@ describe 'customers API' do
     customer = create(:customer)
     invoices = create_list(:invoice, 10, customer_id: customer.id)
     trans = invoices.map do |invoice|
-      Transaction.create!(invoice_id: invoice.id)
+      create(:transaction, invoice_id: invoice.id)
     end
     ids = trans.map { |i| i.id }
     create_list(:transaction, 5)

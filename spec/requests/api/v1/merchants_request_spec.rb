@@ -54,7 +54,7 @@ describe 'merchants API' do
   end
 
   it "finds one merchant by created_at" do
-    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/merchants/find?created_at='2018-08-01T09:00:00.000Z'"
 
@@ -64,7 +64,7 @@ describe 'merchants API' do
   end
 
   it "finds one merchant by updated_at" do
-    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/merchants/find?created_at=#{merchant.updated_at}"
 
@@ -84,9 +84,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by created_at" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.created_at}"
 
@@ -96,9 +96,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by updated_at" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.updated_at}"
 
@@ -108,9 +108,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by id" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?id=#{merchant1.id}"
 
