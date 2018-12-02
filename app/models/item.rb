@@ -15,7 +15,7 @@ class Item < ApplicationRecord
     .last
   end
 
-  def self.by_revenue(max)
+  def self.most_revenue(max)
     joins(:invoice_items, invoices: [:transactions])
     .where("transactions.result = ?", "success")
     .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price)")

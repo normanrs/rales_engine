@@ -1,8 +1,14 @@
 class Api::V1::Items::MostrevenueController < ApplicationController
 
-  def show
-    # id_in = Item.find(params[:id]).merchant_id
-    # render json: MerchantSerializer.new(Merchant.find(id_in))
+  def index
+    render json: ItemSerializer.new(Item.most_revenue(search_params))
   end
+
+  private
+
+    def search_params
+      params.require(:quantity)
+    end
+
 
 end

@@ -216,7 +216,7 @@ describe 'items API' do
     expect(result["data"]["attributes"]["id"]).to eq(item1.id)
   end
 
-  xit "returns top x items by total revenue" do
+  it "returns top x items by total revenue" do
     merchant1 = create(:merchant, name: 'Andy')
     merchant2 = create(:merchant, name: 'Bob')
     merchant3 = create(:merchant, name: 'Charles')
@@ -238,13 +238,12 @@ describe 'items API' do
     transaction3 = create(:transaction, invoice: invoice3, result: 'success')
     transaction4 = create(:transaction, invoice: invoice4, result: 'success')
 
-    require "pry"; binding.pry
-    get "/api/v1/items/#{item1.id}/most_revenue"
+    get "/api/v1/items/#{item1.id}/most_revenue?quantity=3"
 
     result = JSON.parse(response.body)
     expect(response).to be_successful
-    expect(result["data"]["attributes"]["id"]).to eq(item1.id)
+    expect(result["data"].count).to eq(3)
+    expect(result["data"].first["id"].to_i).to eq(item4.id)
   end
-
 
 end
