@@ -9,7 +9,7 @@ class Merchant < ApplicationRecord
     date_end = DateTime.parse(date + " " + "24:00:00 UTC")
     InvoiceItem.joins(invoice: :transactions)
     .where("transactions.result = ?", "success")
-    .where("transactions.created_at > ? AND transactions.created_at < ?", "2018-08-01 00:00:00 UTC", "2018-08-01 24:00:00 UTC")
+    .where("transactions.created_at > ? AND transactions.created_at < ?", date_start.to_s, date_end.to_s)
     .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
@@ -28,6 +28,14 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: "success"}).group(:id)
     .order("total_items desc")
     .limit(max)
+  end
+
+  def money_made
+    Merchant.joins(invoices: :transactions)
+    .joins(invoices: :invoice_items)
+    .where("invoices.merchant_id =?", "#{self.id}")
+    .where(transactions: {result: "success"})
+    .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
 end

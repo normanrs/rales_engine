@@ -58,14 +58,26 @@ end
 
 # GET /api/v1/merchants/revenue?date=x returns the total revenue for date x across all merchants
 # Assume the dates provided match the format of a standard ActiveRecord timestamp.
+def self.revenue(date)
+  date_start = DateTime.parse(date + " " + "00:00:00 UTC")
+  date_end = DateTime.parse(date + " " + "24:00:00 UTC")
+  InvoiceItem.joins(invoice: :transactions)
+  .where("transactions.result = ?", "success")
+  .where("transactions.created_at > ? AND transactions.created_at < ?", date_start.to_s, date_end.to_s)
+  .sum('invoice_items.unit_price * invoice_items.quantity')
+end
 
-InvoiceItem.joins(invoice: :transactions)
-.where("transactions.result = ?", "success")
-.where("transactions.created_at > ? AND transactions.created_at < ?", "2012-03-27 00:00:00 UTC", "2012-03-27 24:00:00 UTC")
-.sum('invoice_items.unit_price * invoice_items.quantity')
 
+InvoiceItem.joins(invoice: :transactions).where("transactions.result = ?", "success").where("transactions.created_at > ? AND transactions.created_at < ?", "2012-03-27 00:00:00 UTC", "2012-03-27 24:00:00 UTC").sum('invoice_items.unit_price * invoice_items.quantity')
+InvoiceItem.joins(invoice: :transactions).where("transactions.result = ?", "success").where("transactions.created_at > ? AND transactions.created_at < ?", "2012-03-27 00:00:00 UTC", "2012-03-27 24:00:00 UTC")
 # Single Merchant
 # GET /api/v1/merchants/:id/revenue returns the total revenue for that merchant across successful transactions
+def money_made
+  # InvoiceItem.joins(invoices: [:transactions, :merchants])
+  Merchant.joins(invoices: :transactions).joins(invoices: :invoice_items).where("invoices.merchant_id =?", "1").where(transactions: {result: "success"}).sum('invoice_items.unit_price * invoice_items.quantity')
+end
+
+
 
 # GET /api/v1/merchants/:id/revenue?date=x returns the total revenue for that merchant for a specific invoice date x
 # GET /api/v1/merchants/:id/favorite_customer returns the customer who has conducted the most total number of successful transactions.

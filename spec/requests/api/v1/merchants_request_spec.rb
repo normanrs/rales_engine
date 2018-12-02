@@ -203,4 +203,57 @@ describe 'merchants API' do
     expect(result["data"].count).to eq(2)
   end
 
+  it "returns total revenue by date across all merchants" do
+    merchant1 = create(:merchant, name: 'Andy')
+    merchant2 = create(:merchant, name: 'Bob')
+    merchant3 = create(:merchant, name: 'Charles')
+    merchant4 = create(:merchant, name: 'Dave')
+    invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
+    invoice2 = create(:invoice, merchant: merchant2, created_at: "2018-08-01 12:00:00 UTC")
+    invoice3 = create(:invoice, merchant: merchant3, created_at: "2018-08-01 17:00:00 UTC")
+    invoice4 = create(:invoice, merchant: merchant4, created_at: "2018-08-01 21:00:00 UTC")
+    item1 = create(:item, merchant: merchant1)
+    invoice_item1 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice1, item: item1)
+    invoice_item2 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice2, item: item1)
+    invoice_item3 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice3, item: item1)
+    invoice_item4 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice4, item: item1)
+    transaction1 = create(:transaction, invoice: invoice1, result: 'success', created_at: "2018-08-01 09:00:00 UTC")
+    transaction2 = create(:transaction, invoice: invoice2, result: 'success', created_at: "2018-08-01 12:00:00 UTC")
+    transaction3 = create(:transaction, invoice: invoice3, result: 'success', created_at: "2018-08-01 17:00:00 UTC")
+    transaction4 = create(:transaction, invoice: invoice4, result: 'success', created_at: "2018-08-01 21:00:00 UTC")
+    date = "2018-08-01"
+
+    get "/api/v1/merchants/revenue?date=#{date}"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["money"].to_i).to eq(800)
+  end
+
+  it "returns total revenue by merchant" do
+    merchant1 = create(:merchant, name: 'Andy')
+    merchant2 = create(:merchant, name: 'Bob')
+    merchant3 = create(:merchant, name: 'Charles')
+    merchant4 = create(:merchant, name: 'Dave')
+    invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
+    invoice2 = create(:invoice, merchant: merchant2, created_at: "2018-08-01 12:00:00 UTC")
+    invoice3 = create(:invoice, merchant: merchant3, created_at: "2018-08-01 17:00:00 UTC")
+    invoice4 = create(:invoice, merchant: merchant4, created_at: "2018-08-01 21:00:00 UTC")
+    item1 = create(:item, merchant: merchant1)
+    invoice_item1 = create(:invoice_item, quantity: 1, unit_price: 100, invoice: invoice1, item: item1)
+    invoice_item2 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice2, item: item1)
+    invoice_item3 = create(:invoice_item, quantity: 3, unit_price: 100, invoice: invoice3, item: item1)
+    invoice_item4 = create(:invoice_item, quantity: 4, unit_price: 100, invoice: invoice4, item: item1)
+    transaction1 = create(:transaction, invoice: invoice1, result: 'success', created_at: "2018-08-01 09:00:00 UTC")
+    transaction2 = create(:transaction, invoice: invoice2, result: 'success', created_at: "2018-08-01 12:00:00 UTC")
+    transaction3 = create(:transaction, invoice: invoice3, result: 'success', created_at: "2018-08-01 17:00:00 UTC")
+    transaction4 = create(:transaction, invoice: invoice4, result: 'success', created_at: "2018-08-01 21:00:00 UTC")
+
+    get "/api/v1/merchants/#{merchant4.id}/revenue"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"]["attributes"]["id"].to_i).to eq(merchant4.id)
+  end
+
 end
