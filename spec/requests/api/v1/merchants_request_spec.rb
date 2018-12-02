@@ -54,7 +54,7 @@ describe 'merchants API' do
   end
 
   it "finds one merchant by created_at" do
-    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/merchants/find?created_at='2018-08-01T09:00:00.000Z'"
 
@@ -64,7 +64,7 @@ describe 'merchants API' do
   end
 
   it "finds one merchant by updated_at" do
-    merchant = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/merchants/find?created_at=#{merchant.updated_at}"
 
@@ -84,9 +84,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by created_at" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.created_at}"
 
@@ -96,9 +96,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by updated_at" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?created_at=#{merchant1.updated_at}"
 
@@ -108,9 +108,9 @@ describe 'merchants API' do
   end
 
   it "finds all merchants by id" do
-    merchant1 = Merchant.create!(name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant2 = Merchant.create!(name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    merchant3 = Merchant.create!(name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    merchant1 = create(:merchant, name: "Norm", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant2 = create(:merchant, name: "Dave", created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    merchant3 = create(:merchant, name: "Tim", created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/merchants/find_all?id=#{merchant1.id}"
 
@@ -143,6 +143,64 @@ describe 'merchants API' do
     expect(response).to be_successful
     expect(result["data"].count).to eq(10)
     expect(result["data"].first["attributes"]["merchant_id"]).to eq(merch1.id)
+  end
+
+  it "returns merchants with the most revenue" do
+    merchant1 = create(:merchant, name: 'Andy')
+    merchant2 = create(:merchant, name: 'Bob')
+    merchant3 = create(:merchant, name: 'Charles')
+    merchant4 = create(:merchant, name: 'Dave')
+    invoice1 = create(:invoice, merchant: merchant1)
+    invoice2 = create(:invoice, merchant: merchant2)
+    invoice3 = create(:invoice, merchant: merchant3)
+    invoice4 = create(:invoice, merchant: merchant4)
+    item1 = create(:item, merchant: merchant1)
+    item2 = create(:item, merchant: merchant2)
+    item3 = create(:item, merchant: merchant3)
+    item4 = create(:item, merchant: merchant4)
+    invoice_item1 = create(:invoice_item, quantity: 1, unit_price: 100, invoice: invoice1, item: item1)
+    invoice_item2 = create(:invoice_item, quantity: 1, unit_price: 200, invoice: invoice2, item: item2)
+    invoice_item3 = create(:invoice_item, quantity: 10, unit_price: 300, invoice: invoice3, item: item3)
+    invoice_item4 = create(:invoice_item, quantity: 20, unit_price: 400, invoice: invoice4, item: item4)
+    transaction1 = create(:transaction, invoice: invoice1, result: 'success')
+    transaction2 = create(:transaction, invoice: invoice2, result: 'success')
+    transaction3 = create(:transaction, invoice: invoice3, result: 'success')
+    transaction4 = create(:transaction, invoice: invoice4, result: 'success')
+
+    get "/api/v1/merchants/most_revenue?quantity=2"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(2)
+  end
+
+  it "returns top x merchants ranked by total number of items sold" do
+    merchant1 = create(:merchant, name: 'Andy')
+    merchant2 = create(:merchant, name: 'Bob')
+    merchant3 = create(:merchant, name: 'Charles')
+    merchant4 = create(:merchant, name: 'Dave')
+    invoice1 = create(:invoice, merchant: merchant1)
+    invoice2 = create(:invoice, merchant: merchant2)
+    invoice3 = create(:invoice, merchant: merchant3)
+    invoice4 = create(:invoice, merchant: merchant4)
+    item1 = create(:item, merchant: merchant1)
+    item2 = create(:item, merchant: merchant2)
+    item3 = create(:item, merchant: merchant3)
+    item4 = create(:item, merchant: merchant4)
+    invoice_item1 = create(:invoice_item, quantity: 1, unit_price: 100, invoice: invoice1, item: item1)
+    invoice_item2 = create(:invoice_item, quantity: 5, unit_price: 200, invoice: invoice2, item: item2)
+    invoice_item3 = create(:invoice_item, quantity: 10, unit_price: 300, invoice: invoice3, item: item3)
+    invoice_item4 = create(:invoice_item, quantity: 20, unit_price: 400, invoice: invoice4, item: item4)
+    transaction1 = create(:transaction, invoice: invoice1, result: 'success')
+    transaction2 = create(:transaction, invoice: invoice2, result: 'success')
+    transaction3 = create(:transaction, invoice: invoice3, result: 'success')
+    transaction4 = create(:transaction, invoice: invoice4, result: 'success')
+
+    get "/api/v1/merchants/most_items?quantity=2"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(2)
   end
 
 end

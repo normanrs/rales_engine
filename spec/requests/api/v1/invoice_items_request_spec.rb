@@ -50,7 +50,7 @@ describe 'invoice_items API' do
   end
 
   it "finds one invoice_item by created_at" do
-    invoice_item = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     # get "/api/v1/invoice_items/find?created_at=#{invoice_item.created_at}"
     get "/api/v1/invoice_items/find?created_at='2018-08-01T09:00:00.000Z'"
@@ -61,7 +61,7 @@ describe 'invoice_items API' do
   end
 
   it "finds one invoice_item by updated_at" do
-    invoice_item = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/invoice_items/find?created_at=#{invoice_item.updated_at}"
 
@@ -71,9 +71,9 @@ describe 'invoice_items API' do
   end
 
   it "finds all invoice_items by created_at" do
-    invoice_item1 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item2 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item3 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    invoice_item1 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item2 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item3 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/invoice_items/find_all?created_at=#{invoice_item1.created_at}"
 
@@ -83,9 +83,9 @@ describe 'invoice_items API' do
   end
 
   it "finds all invoice_items by updated_at" do
-    invoice_item1 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item2 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item3 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    invoice_item1 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item2 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item3 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/invoice_items/find_all?created_at=#{invoice_item1.updated_at}"
 
@@ -95,9 +95,9 @@ describe 'invoice_items API' do
   end
 
   it "finds all invoice_items by id" do
-    invoice_item1 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item2 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    invoice_item3 = InvoiceItem.create!(item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    invoice_item1 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item2 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    invoice_item3 = create(:invoice_item, item_id: @item.id, invoice_id: @invoice.id,created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/invoice_items/find_all?id=#{invoice_item1.id}"
 

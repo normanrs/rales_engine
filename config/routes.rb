@@ -4,45 +4,52 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :merchants do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
+        get 'most_revenue', to: 'most_revenue#index'
+        get 'most_items', to: 'mostitems#index'
+        get 'revenue', to: 'revenue#show'
+
       end
 
       namespace :customers do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
       end
 
       namespace :items do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
       end
 
       namespace :invoices do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
       end
 
       namespace :transactions do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
       end
 
       namespace :invoice_items do
-        get '/find_all', to: 'search#index'
-        get '/random', to: 'search#show'
-        get '/find',   to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'search#show'
+        get 'find',   to: 'search#show'
       end
 
       resources :merchants, only: [:index, :show] do
         # resources :items, only: [:index]
-        get '/items', to: 'merchants/items#index'
-        get '/invoices', to: 'merchants/invoices#index'
+        get 'items', to: 'merchants/items#index'
+        get 'invoices', to: 'merchants/invoices#index'
+        get 'revenue', to: 'merchants/revenue#show'
+        get 'favorite_customer', to: 'merchants/bestcustomer#show'
+
       end
 
       resources :invoices, only: [:index, :show] do
@@ -61,6 +68,10 @@ Rails.application.routes.draw do
       resources :items, only: [:index, :show] do
         get 'invoice_items', to: 'items/invoice_items#index'
         get 'merchant', to: 'items/merchant#show'
+        get 'most_revenue', to: 'items/mostrevenue#index'
+        get 'most_items', to: 'items/mostitems#index'
+        get 'best_day', to: 'items/bestday#show'
+
       end
 
       resources :transactions, only: [:index, :show] do
@@ -70,6 +81,7 @@ Rails.application.routes.draw do
       resources :customers, only: [:index, :show] do
         get 'invoices', to: 'customers/invoices#index'
         get 'transactions', to: 'customers/transactions#index'
+        get 'favorite_merchant', to: 'customers/bestmerchant#index'
       end
 
     end

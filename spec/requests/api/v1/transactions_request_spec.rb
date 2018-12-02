@@ -49,7 +49,7 @@ describe 'transactions API' do
   end
 
   it "finds one transaction by created_at" do
-    transaction = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/transactions/find?created_at='2018-08-01T09:00:00.000Z'"
 
@@ -59,7 +59,7 @@ describe 'transactions API' do
   end
 
   it "finds one transaction by updated_at" do
-    transaction = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
 
     get "/api/v1/transactions/find?created_at=#{transaction.updated_at}"
 
@@ -69,9 +69,9 @@ describe 'transactions API' do
   end
 
   it "finds all transactions by created_at" do
-    transaction1 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction2 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction3 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    transaction1 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction2 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction3 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/transactions/find_all?created_at=#{transaction1.created_at}"
 
@@ -81,9 +81,9 @@ describe 'transactions API' do
   end
 
   it "finds all transactions by updated_at" do
-    transaction1 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction2 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction3 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    transaction1 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction2 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction3 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/transactions/find_all?created_at=#{transaction1.updated_at}"
 
@@ -93,9 +93,9 @@ describe 'transactions API' do
   end
 
   it "finds all transactions by id" do
-    transaction1 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction2 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
-    transaction3 = Transaction.create!(invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
+    transaction1 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction2 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-01 09:00:00 UTC", updated_at: "2018-08-01 09:00:00 UTC")
+    transaction3 = create(:transaction, invoice_id: @invoice.id, created_at: "2018-08-02 09:00:00 UTC", updated_at: "2018-08-02 09:00:00 UTC")
 
     get "/api/v1/transactions/find_all?id=#{transaction1.id}"
 
