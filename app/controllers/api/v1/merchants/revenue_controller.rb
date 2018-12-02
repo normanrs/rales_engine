@@ -7,8 +7,9 @@ require 'ostruct'
       render json: MoneySerializer.new(money_in)
     else
       merch = Merchant.find(search_params[:merchant_id])
-      money_in = OpenStruct.new(:id => merch.id, :money => (merch.money_made) )
-      render json: MoneySerializer.new(money_in)
+      merch_in = OpenStruct.new(:id => merch.id, :name => merch.name, :created_at => merch.created_at, :updated_at => merch.updated_at, :revenue => merch.money_made.to_i )
+      # money_in = OpenStruct.new(:id => merch.id, :money => (merch.money_made) )
+      render json: MerchantsumSerializer.new(merch_in)
     end
   end
 

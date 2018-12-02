@@ -75,6 +75,7 @@ InvoiceItem.joins(invoice: :transactions).where("transactions.result = ?", "succ
 def money_made
   # InvoiceItem.joins(invoices: [:transactions, :merchants])
   Merchant.joins(invoices: :transactions).joins(invoices: :invoice_items).where("invoices.merchant_id =?", "1").where(transactions: {result: "success"}).sum('invoice_items.unit_price * invoice_items.quantity')
+  Merchant.joins(invoices: :transactions).joins(invoices: :invoice_items).where("invoices.merchant_id =?", "1").where(transactions: {result: "success"}).group("merchants.id").select("merchants.*, sum(invoice_items.quantity)")
 end
 
 
