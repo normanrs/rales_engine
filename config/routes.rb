@@ -70,7 +70,7 @@ Rails.application.routes.draw do
         get 'merchant', to: 'items/merchant#show'
         get 'most_revenue', to: 'items/mostrevenue#index'
         get 'most_items', to: 'items/mostitems#index'
-        get 'best_day', to: 'items/bestday#index'
+        get 'best_day', to: 'items/bestday#show'
 
       end
 

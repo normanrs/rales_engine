@@ -1,8 +1,7 @@
 class Api::V1::Items::BestdayController < ApplicationController
 
   def show
-    # id_in = Item.find(params[:id]).merchant_id
-    # render json: MerchantSerializer.new(Merchant.find(id_in))
+    render json: DateSerializer.new(Item.best_day(params[:item_id]))
   end
 
 end

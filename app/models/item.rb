@@ -9,10 +9,18 @@ class Item < ApplicationRecord
     joins(invoices: [:transactions])
     .where("transactions.result = ?", "success")
     .where("invoice_items.item_id = ?", id)
-    .select("cast(invoices.created_at AS date) AS date, sum(invoice_items.quantity) AS sold")
-    .group("date")
+    .select("items.*, cast(invoices.created_at AS date) AS date, sum(invoice_items.quantity) AS sold")
+    .group("date, items.id")
     .order("sold", "date")
-    .last.date
+    .last
   end
 
 end
+
+# joins(invoices: [:transactions])
+# .where("transactions.result = ?", "success")
+# .where("invoice_items.item_id = ?", id)
+# .select("cast(invoices.created_at AS date) AS date, sum(invoice_items.quantity) AS sold")
+# .group("date")
+# .order("sold", "date")
+# .last

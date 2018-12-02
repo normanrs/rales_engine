@@ -185,8 +185,8 @@
       "/Users/normanrs/turing/3module/ralesengine/rales_engine/spec/factories/customers.rb": [
         1,
         1,
-        33,
-        33,
+        38,
+        38,
         null,
         null
       ],
@@ -205,16 +205,16 @@
         1,
         1,
         1,
-        16,
+        20,
         null,
         null
       ],
       "/Users/normanrs/turing/3module/ralesengine/rales_engine/spec/factories/items.rb": [
         1,
         1,
-        36,
-        40,
-        36,
+        37,
+        41,
+        37,
         1,
         null,
         null
@@ -222,7 +222,7 @@
       "/Users/normanrs/turing/3module/ralesengine/rales_engine/spec/factories/merchants.rb": [
         1,
         1,
-        64,
+        65,
         null,
         null
       ],
@@ -230,8 +230,8 @@
         1,
         1,
         1,
-        1,
-        1,
+        5,
+        5,
         1,
         null,
         null
@@ -391,7 +391,15 @@
         null,
         null,
         null,
-        0,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null
@@ -492,8 +500,31 @@
         1,
         1,
         null
+      ],
+      "/Users/normanrs/turing/3module/ralesengine/rales_engine/app/models/transaction.rb": [
+        1,
+        1,
+        null,
+        1,
+        null
+      ],
+      "/Users/normanrs/turing/3module/ralesengine/rales_engine/app/controllers/api/v1/items/bestday_controller.rb": [
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/normanrs/turing/3module/ralesengine/rales_engine/app/serializers/date_serializer.rb": [
+        1,
+        1,
+        1,
+        null
       ]
     },
-    "timestamp": 1543706075
+    "timestamp": 1543708852
   }
 }
