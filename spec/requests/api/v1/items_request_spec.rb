@@ -187,24 +187,24 @@ describe 'items API' do
     expect(result["data"]["attributes"]["id"]).to eq(item1.merchant_id)
   end
 
-  it "returns items best day" do
+  it "returns best day for one item" do
     merchant1 = create(:merchant, name: 'Andy')
-    merchant2 = create(:merchant, name: 'Bob')
-    merchant3 = create(:merchant, name: 'Charles')
-    merchant4 = create(:merchant, name: 'Dave')
-    invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
-    invoice2 = create(:invoice, merchant: merchant2, created_at: "2018-08-02 09:00:00 UTC")
-    invoice3 = create(:invoice, merchant: merchant3, created_at: "2018-08-03 09:00:00 UTC")
-    invoice4 = create(:invoice, merchant: merchant4, created_at: "2018-08-04 09:00:00 UTC")
     item1 = create(:item, merchant: merchant1)
+    invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
+    invoice2 = create(:invoice, merchant: merchant1, created_at: "2018-08-02 09:00:00 UTC")
+    invoice3 = create(:invoice, merchant: merchant1, created_at: "2018-08-03 09:00:00 UTC")
+    invoice4 = create(:invoice, merchant: merchant1, created_at: "2018-08-04 09:00:00 UTC")
+    invoice5 = create(:invoice, merchant: merchant1, created_at: "2018-08-05 09:00:00 UTC")
     invoice_item1 = create(:invoice_item, quantity: 1, unit_price: 100, invoice: invoice1, item: item1)
     invoice_item2 = create(:invoice_item, quantity: 5, unit_price: 100, invoice: invoice2, item: item1)
     invoice_item3 = create(:invoice_item, quantity: 20, unit_price: 100, invoice: invoice3, item: item1)
     invoice_item4 = create(:invoice_item, quantity: 20, unit_price: 100, invoice: invoice4, item: item1)
+    invoice_item5 = create(:invoice_item, quantity: 100, unit_price: 100, invoice: invoice5, item: item1)
     transaction1 = create(:transaction, invoice: invoice1, result: 'success')
     transaction2 = create(:transaction, invoice: invoice2, result: 'success')
     transaction3 = create(:transaction, invoice: invoice3, result: 'success')
     transaction4 = create(:transaction, invoice: invoice4, result: 'success')
+    transaction5 = create(:transaction, invoice: invoice4, result: 'failed')
 
     get "/api/v1/items/#{item1.id}/best_day"
 
@@ -213,5 +213,34 @@ describe 'items API' do
     expect(result["data"]["attributes"]["id"]).to eq(item1.id)
   end
 
+  it "returns top x items by total revenue" do
+    merchant1 = create(:merchant, name: 'Andy')
+    merchant2 = create(:merchant, name: 'Bob')
+    merchant3 = create(:merchant, name: 'Charles')
+    merchant4 = create(:merchant, name: 'Dave')
+    invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
+    invoice2 = create(:invoice, merchant: merchant2, created_at: "2018-08-02 09:00:00 UTC")
+    invoice3 = create(:invoice, merchant: merchant1, created_at: "2018-08-03 09:00:00 UTC")
+    invoice4 = create(:invoice, merchant: merchant2, created_at: "2018-08-04 09:00:00 UTC")
+    item1 = create(:item, merchant: merchant1)
+    item2 = create(:item, merchant: merchant2)
+    item3 = create(:item, merchant: merchant1)
+    item4 = create(:item, merchant: merchant2)
+    invoice_item1 = create(:invoice_item, quantity: 2, unit_price: 100, invoice: invoice1, item: item1)
+    invoice_item2 = create(:invoice_item, quantity: 4, unit_price: 100, invoice: invoice2, item: item2)
+    invoice_item3 = create(:invoice_item, quantity: 6, unit_price: 100, invoice: invoice1, item: item3)
+    invoice_item4 = create(:invoice_item, quantity: 8, unit_price: 100, invoice: invoice2, item: item4)
+    transaction1 = create(:transaction, invoice: invoice1, result: 'success')
+    transaction2 = create(:transaction, invoice: invoice2, result: 'success')
+    transaction3 = create(:transaction, invoice: invoice3, result: 'success')
+    transaction4 = create(:transaction, invoice: invoice4, result: 'success')
+
+    get "/api/v1/items/#{item1.id}/most_revenue?quantity=3"
+
+    result = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(result["data"].count).to eq(3)
+    expect(result["data"].first["id"].to_i).to eq(item4.id)
+  end
 
 end

@@ -15,12 +15,12 @@ class Item < ApplicationRecord
     .last
   end
 
-end
+  def self.most_revenue(max)
+    joins(:invoice_items, invoices: [:transactions])
+    .where("transactions.result = ?", "success")
+    .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price)")
+    .group("items.id").order("sum DESC")
+    .limit(max)
+  end
 
-# joins(invoices: [:transactions])
-# .where("transactions.result = ?", "success")
-# .where("invoice_items.item_id = ?", id)
-# .select("cast(invoices.created_at AS date) AS date, sum(invoice_items.quantity) AS sold")
-# .group("date")
-# .order("sold", "date")
-# .last
+end
