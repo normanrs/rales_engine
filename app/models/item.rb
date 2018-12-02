@@ -15,6 +15,14 @@ class Item < ApplicationRecord
     .last
   end
 
+  def self.by_revenue(max)
+    joins(:invoice_items, invoices: [:transactions])
+    .where("transactions.result = ?", "success")
+    .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price)")
+    .group("items.id").order("sum DESC")
+    .limit(max)
+  end
+
 end
 
 # joins(invoices: [:transactions])
