@@ -189,9 +189,6 @@ describe 'items API' do
 
   it "returns best day for one item" do
     merchant1 = create(:merchant, name: 'Andy')
-    # merchant2 = create(:merchant, name: 'Bob')
-    # merchant3 = create(:merchant, name: 'Charles')
-    # merchant4 = create(:merchant, name: 'Dave')
     item1 = create(:item, merchant: merchant1)
     invoice1 = create(:invoice, merchant: merchant1, created_at: "2018-08-01 09:00:00 UTC")
     invoice2 = create(:invoice, merchant: merchant1, created_at: "2018-08-02 09:00:00 UTC")
