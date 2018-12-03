@@ -254,6 +254,7 @@ describe 'merchants API' do
     result = JSON.parse(response.body)
     expect(response).to be_successful
     expect(result["data"]["attributes"]["id"].to_i).to eq(merchant4.id)
+    expect(result["data"]["attributes"]["revenue"].to_i).to eq(400)
   end
 
 end
