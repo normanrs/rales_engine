@@ -8,7 +8,6 @@ Follow these steps to obtain this project on your computer:
 1. Clone the project from this repository, or fork it from this repository to your own using this info:
    git clone
    git@github.com:normanrs/rales_engine.git
-
 2. Once the project has been cloned into your folder, navigate to that folder and run:
    bundle install
    bundle update
